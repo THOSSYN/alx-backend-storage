@@ -25,8 +25,6 @@ BEGIN
 
   INSERT INTO corrections (user_id, project_id, score)
   VALUES(user_id_param, proj_id, score_param);
-
-  SELECT user_id_param, project_name;
 END;
 //
 
