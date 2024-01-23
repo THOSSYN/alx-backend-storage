@@ -6,30 +6,31 @@
 from pymongo import MongoClient
 
 
-client = MongoClient()
-db = client.logs
+if __name__ == '__main__':
+    client = MongoClient()
+    db = client.logs
 
-total_logs = db.nginx.count_documents({})
-print(f"{total_logs} logs")
+    total_logs = db.nginx.count_documents({})
+    print(f"{total_logs} logs")
 
-methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
-for method in methods:
-    count = db.nginx.count_documents({"method": method})
-    print(f"    method {method}: {count}")
+    methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
+    for method in methods:
+        count = db.nginx.count_documents({"method": method})
+        print(f"    method {method}: {count}")
 
-status_check_count = db.nginx.count_documents({"method": "GET", "path": "/status"})
-print(f"{status_check_count} status check")
+    status_check_count = db.nginx.count_documents({"method": "GET", "path": "/status"})
+    print(f"{status_check_count} status check")
 
-pipeline = [
-    {"$group": {"_id": "$ip", "count": {"$sum": 1}}},
-    {"$sort": {"count": -1}},
-    {"$limit": 10}
-]
+    pipeline = [
+        {"$group": {"_id": "$ip", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}},
+        {"$limit": 10}
+    ]
 
-top_ten_ips = db.nginx.aggregate(pipeline)
+    top_ten_ips = db.nginx.aggregate(pipeline)
 
-print("IPs:")
-for item in top_ten_ips:
-    ip = item["_id"]
-    count = item["count"]
-    print(f"    {ip}: {count}")
+    print("IPs:")
+    for item in top_ten_ips:
+        ip = item["_id"]
+        count = item["count"]
+        print(f"    {ip}: {count}")
