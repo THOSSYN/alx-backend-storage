@@ -17,7 +17,7 @@ if __name__ == '__main__':
     methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
     for method in methods:
         count = db.nginx.count_documents({"method": method})
-        print(f"    method {method}: {count}")
+        print(f"\tmethod {method}: {count}")
 
     status_check_count = db.nginx.count_documents({"method": "GET", "path": "/status"})
     print(f"{status_check_count} status check")
@@ -34,4 +34,4 @@ if __name__ == '__main__':
     for item in top_ten_ips:
         ip = item["_id"]
         count = item["count"]
-        print(f"    {ip}: {count}")
+        print(f"\t{ip}: {count}")
